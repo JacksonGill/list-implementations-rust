@@ -2,7 +2,7 @@ use std::ptr;
 
 pub struct List<T> {
     head: Link<T>,
-    tail: *mut Node<T>, 
+    tail: *mut Node<T>,
 }
 
 type Link<T> = *mut Node<T>;
@@ -14,7 +14,10 @@ struct Node<T> {
 
 impl<T> List<T> {
     pub fn new() -> Self {
-        List { head: ptr::null_mut(), tail: ptr::null_mut() }
+        List {
+            head: ptr::null_mut(),
+            tail: ptr::null_mut(),
+        }
     }
 
     pub fn push(&mut self, elem: T) {
@@ -54,33 +57,29 @@ impl<T> List<T> {
     pub fn into_iter(self) -> IntoIter<T> {
         IntoIter(self)
     }
-    
+
     pub fn iter(&self) -> Iter<T> {
         unsafe {
-            Iter { next: self.head.as_ref() }
+            Iter {
+                next: self.head.as_ref(),
+            }
         }
     }
-    
+
     pub fn iter_mut(&mut self) -> IterMut<T> {
         unsafe {
-            IterMut { next: self.head.as_mut() }
+            IterMut {
+                next: self.head.as_mut(),
+            }
         }
     }
 
     pub fn peek(&self) -> Option<&T> {
-        unsafe {
-            self.head.as_ref().map(|node| {
-                &node.elem
-            })
-        }
+        unsafe { self.head.as_ref().map(|node| &node.elem) }
     }
 
     pub fn peek_mut(&mut self) -> Option<&mut T> {
-        unsafe {
-            self.head.as_mut().map(|node| {
-                &mut node.elem
-            })
-        }
+        unsafe { self.head.as_mut().map(|node| &mut node.elem) }
     }
 }
 
